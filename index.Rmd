@@ -1,0 +1,94 @@
+---
+title       : Data products project pitch
+subtitle    : Demonstration of elegant interactive graphic with GoogleVis+Shiny+Shinyapps.io
+author      : V. Zarnitsyn
+job         : July 25,2015
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Project description
+
+* The proposed shiny presentation for developing data products class is based on several brilliant simple development tools presented in the course.
+
+* In my line of work interactive geographic maps are valuable demonstration tools
+
+* Combination of slidify+googleVis or shiny+shinyApps+GoogleVis makes them easy to develop and present
+
+* The following presentation is based on the following small subset of world stat data
+
+```{r echo=FALSE, cache=FALSE}
+myData<-data.frame(Country=c('China','India','USA','Indonesia','Brazil'),
+                   Population_M=c(1371,1275,321,256,205),
+                   GDP_per_capita=c(11907,5418,53042,9561,15038))
+print(myData)
+```
+
+--- 
+
+## Shiny details
+
+* In developing shiny application in addtion to tools described in Coursera lectures I used the following widgets found through shinyapps tutorials
+
+* helpText() to place a Note with simple explanations on main page
+
+* Tabs to present more detailed documentation and table view of the data with the following code
+ ```{r eval=FALSE}
+tabsetPanel(type = "tabs",  tabPanel("Plot",htmlOutput("gvis")), 
+                            tabPanel("Documentation",verbatimTextOutput("summary")), 
+                            tabPanel("Table view", tableOutput("table"))
+                )
+```
+
+* htmlOutput() function was used to pass googleVis html code to main presentation apge as you can see in the piece of code above
+
+* selectInput() widget to select one option out of multiple availabe
+                
+
+--- 
+
+## GoogleVis use details
+
+* To create colored maps the googleVis based code was used. 
+* Field to present and color choice are being read from ui.R inputs and passed to gvisGeoChart() in server .R. GoogleGeoChart function generates the map with selected variable and selected color scheme
+
+* The fragment of this code is shown below:
+
+ ```{r eval=FALSE}
+field=input$Field
+choice=input$Color_choice
+if (choice == 1)
+{ g<-gvisGeoChart(... colorvar=field,...options=list( ...colorAxis="{colors:['yellow', 'green']}")) } 
+if (choice == 2)
+{ g<-gvisGeoChart(... options=list( ...colorAxis="{colors:['green', 'red']}")) } 
+if (choice == 3)
+{ g<-gvisGeoChart(... options=list( ...colorAxis="{colors:['grey', 'black']}")) } 
+g
+
+```
+
+On the next slide I will show you the results of the code adapted for slidify execution with fixed Field='Population_M' and choice = 1 (Yellow to green color map ).
+
+
+--- 
+
+## Sample interactive plot
+
+```{r setOptions, message=FALSE, results='asis'}
+library(googleVis)
+op <- options(gvis.plot.tag='chart') # very critical to use in slidify or knitr 
+field='Population_M'
+g<-gvisGeoChart(myData,locationvar="Country", colorvar=field,
+options=list( width=400, height=300,colorAxis="{colors:['yellow', 'green']}"))  
+plot(g)
+```
+
+
+
+
+
+

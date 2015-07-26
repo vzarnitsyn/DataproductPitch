@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data products project pitch</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Data products project pitch">
+  <meta name="author" content="V. Zarnitsyn">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Data products project pitch</h1>
+    <h2>Demonstration of elegant interactive graphic with GoogleVis+Shiny+Shinyapps.io</h2>
+    <p>V. Zarnitsyn<br/>July 25,2015</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Project description</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>The proposed shiny presentation for developing data products class is based on several brilliant simple development tools presented in the course.</p></li>
+<li><p>In my line of work interactive geographic maps are valuable demonstration tools</p></li>
+<li><p>Combination of slidify+googleVis or shiny+shinyApps+GoogleVis makes them easy to develop and present</p></li>
+<li><p>The following presentation is based on the following small subset of world stat data</p></li>
+</ul>
+
+<pre><code>##     Country Population_M GDP_per_capita
+## 1     China         1371          11907
+## 2     India         1275           5418
+## 3       USA          321          53042
+## 4 Indonesia          256           9561
+## 5    Brazil          205          15038
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Shiny details</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>In developing shiny application in addtion to tools described in Coursera lectures I used the following widgets found through shinyapps tutorials</p></li>
+<li><p>helpText() to place a Note with simple explanations on main page</p></li>
+<li><p>Tabs to present more detailed documentation and table view of the data with the following code</p>
+
+<pre><code class="r">tabsetPanel(type = &quot;tabs&quot;,  tabPanel(&quot;Plot&quot;,htmlOutput(&quot;gvis&quot;)), 
+                        tabPanel(&quot;Documentation&quot;,verbatimTextOutput(&quot;summary&quot;)), 
+                        tabPanel(&quot;Table view&quot;, tableOutput(&quot;table&quot;))
+            )
+</code></pre></li>
+<li><p>htmlOutput() function was used to pass googleVis html code to main presentation apge as you can see in the piece of code above</p></li>
+<li><p>selectInput() widget to select one option out of multiple availabe</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>GoogleVis use details</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>To create colored maps the googleVis based code was used. </li>
+<li><p>Field to present and color choice are being read from ui.R inputs and passed to gvisGeoChart() in server .R. GoogleGeoChart function generates the map with selected variable and selected color scheme</p></li>
+<li><p>The fragment of this code is shown below:</p>
+
+<pre><code class="r">field=input$Field
+choice=input$Color_choice
+if (choice == 1)
+{ g&lt;-gvisGeoChart(... colorvar=field,...options=list( ...colorAxis=&quot;{colors:[&#39;yellow&#39;, &#39;green&#39;]}&quot;)) } 
+if (choice == 2)
+{ g&lt;-gvisGeoChart(... options=list( ...colorAxis=&quot;{colors:[&#39;green&#39;, &#39;red&#39;]}&quot;)) } 
+if (choice == 3)
+{ g&lt;-gvisGeoChart(... options=list( ...colorAxis=&quot;{colors:[&#39;grey&#39;, &#39;black&#39;]}&quot;)) } 
+g
+</code></pre></li>
+</ul>
+
+<p>On the next slide I will show you the results of the code adapted for slidify execution with fixed Field=&#39;Population_M&#39; and choice = 1 (Yellow to green color map ).</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Sample interactive plot</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">library(googleVis)
+op &lt;- options(gvis.plot.tag=&#39;chart&#39;) # very critical to use in slidify or knitr 
+field=&#39;Population_M&#39;
+g&lt;-gvisGeoChart(myData,locationvar=&quot;Country&quot;, colorvar=field,
+options=list( width=400, height=300,colorAxis=&quot;{colors:[&#39;yellow&#39;, &#39;green&#39;]}&quot;))  
+plot(g)
+</code></pre>
+
+<!-- GeoChart generated in R 3.2.1 by googleVis 0.5.9 package -->
+
+<!-- Sat Jul 25 22:50:18 2015 -->
+
+<!-- jsHeader -->
+
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataGeoChartID103c3256614f () {
+var data = new google.visualization.DataTable();
+var datajson =
+[
+ [
+ "China",
+1371 
+],
+[
+ "India",
+1275 
+],
+[
+ "USA",
+321 
+],
+[
+ "Indonesia",
+256 
+],
+[
+ "Brazil",
+205 
+] 
+];
+data.addColumn('string','Country');
+data.addColumn('number','Population_M');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartGeoChartID103c3256614f() {
+var data = gvisDataGeoChartID103c3256614f();
+var options = {};
+options["width"] =    400;
+options["height"] =    300;
+options["colorAxis"] = {colors:['yellow', 'green']};
+
+    var chart = new google.visualization.GeoChart(
+    document.getElementById('GeoChartID103c3256614f')
+    );
+    chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+var chartid = "geochart";
+  
+// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+var i, newPackage = true;
+for (i = 0; newPackage && i < pkgs.length; i++) {
+if (pkgs[i] === chartid)
+newPackage = false;
+}
+if (newPackage)
+  pkgs.push(chartid);
+  
+// Add the drawChart function to the global list of callbacks
+callbacks.push(drawChartGeoChartID103c3256614f);
+})();
+function displayChartGeoChartID103c3256614f() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+  var pkgCount = pkgs.length;
+  google.load("visualization", "1", { packages:pkgs, callback: function() {
+  if (pkgCount != pkgs.length) {
+  // Race condition where another setTimeout call snuck in after us; if
+  // that call added a package, we must not shift its callback
+  return;
+}
+while (callbacks.length > 0)
+callbacks.shift()();
+} });
+}, 100);
+}
+ 
+// jsFooter
+</script>
+ 
+
+<!-- jsChart -->  
+
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartGeoChartID103c3256614f"></script>
+ 
+
+<!-- divChart -->
+
+<div id="GeoChartID103c3256614f" 
+  style="width: 400; height: 300;">
+</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Project description'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Shiny details'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='GoogleVis use details'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Sample interactive plot'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
